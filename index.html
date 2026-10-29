@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Wan 3.0 notes: draft cheap, render once</title>
+<meta name="description" content="A short practitioner note on cutting AI video render cost by drafting at low quality first.">
+</head>
+<body>
+<main>
+<h1>Draft cheap, render the keeper once</h1>
+<p>Most of the cost in AI video is not the idea. It is re-rendering a shot you already know is wrong. I started treating the first pass as a storyboard: short clips, lower resolution, no upscale, and I throw away anything that fails the first three seconds.</p>
+<p>On a recent batch of product shots I logged 18 drafts and kept 2. The discarded drafts were the expensive habit. A 5-second low-res pass is enough to see motion, hands, and whether the prompt actually followed the shot list. Only the keepers go to a full render.</p>
+<p>Compared with generating everything at final quality, that split cut my failed-render spend by roughly the share of drafts I throw away, which in this log was about 16 of 18. It is not a model benchmark. It is just how I stop paying full price for clips I will never ship.</p>
+<p>The tool I am using for that draft-then-render loop is the <a href="https://wan30.video">Wan 3.0 video generator</a>.</p>
+</main>
+</body>
+</html>
