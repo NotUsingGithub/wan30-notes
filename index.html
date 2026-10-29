@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Wan 3.0 notes: draft cheap, render once</title>
-<meta name="description" content="A short practitioner note on cutting AI video render cost by drafting at low quality first.">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Why my image-to-video drafts kept looking almost right</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;line-height:1.55;color:#111}
+h1{font-size:1.6rem} h2{font-size:1.25rem;margin-top:1.6rem} h3{font-size:1.05rem}
+a{color:#0b57d0}
+</style>
 </head>
 <body>
-<main>
-<h1>Draft cheap, render the keeper once</h1>
-<p>Most of the cost in AI video is not the idea. It is re-rendering a shot you already know is wrong. I started treating the first pass as a storyboard: short clips, lower resolution, no upscale, and I throw away anything that fails the first three seconds.</p>
-<p>On a recent batch of product shots I logged 18 drafts and kept 2. The discarded drafts were the expensive habit. A 5-second low-res pass is enough to see motion, hands, and whether the prompt actually followed the shot list. Only the keepers go to a full render.</p>
-<p>Compared with generating everything at final quality, that split cut my failed-render spend by roughly the share of drafts I throw away, which in this log was about 16 of 18. It is not a model benchmark. It is just how I stop paying full price for clips I will never ship.</p>
-<p>The tool I am using for that draft-then-render loop is the <a href="https://wan30.video">Wan 3.0 video generator</a>.</p>
-</main>
+<h1>Why my image-to-video drafts kept looking “almost right” (and the 4-part check I use now)</h1><p>I generate short AI clips almost every day — product loops, still-to-motion tests, 4–8 second drafts. For a while every render looked *almost* usable, then fell apart on a second watch: face drift, melting hands, prompt words that never showed up, audio that felt glued on.</p><p>This note is the checklist I actually use before I burn another paid run. It is not a feature tour.</p><h2>The pain (with numbers)</h2><p>On a normal day I used to run <strong>6–10</strong> full-quality drafts to get <strong>1</strong> clip I would keep. Typical waste patterns:</p><ul><li><strong>Prompt bloat:</strong> one paragraph with 8 adjectives → model “averages” them and ignores the motion I cared about.</li><li><strong>Wrong duration:</strong> asking for 10–12s when the tool is stable around <strong>4–5s</strong> → mid-clip morph.</li><li><strong>Re-running everything:</strong> changing only the last word still cost a full render (~same credits as the first try).</li></ul><p>After I switched to a stricter pre-flight, I usually land a keeper in <strong>2–3</strong> runs instead of 6–10. That is the only metric I care about here.</p><h2>Honest comparison (what failed for me)</h2><p>I tried the usual path: long cinematic prompts, “masterpiece / best quality” spam, and one giant seed hope.</p><p>What failed:</p><ol><li><strong>Style words without a camera verb</strong> — “cinematic, beautiful lighting” with no pan/zoom/hold → static soup.</li><li><strong>Changing 5 things at once</strong> — then I could not tell which change helped.</li><li><strong>Treating audio as a free add-on</strong> — lip/ambience mismatch made an otherwise OK clip unusable.</li></ol><p>What worked better was boring: one still, one motion sentence, short length, change <strong>one</strong> variable per retry.</p><h2>The 4-part checklist (do this before you hit Generate)</h2><h3>1) Lock the still</h3><p>Use one clear image. Crop faces/products so the subject fills most of the frame. If the still is busy, the motion model invents clutter.</p><h3>2) One motion sentence only</h3><p>Write a single verb phrase, e.g. “slow push-in on the product, hold the last second.”  </p><p>Do <strong>not</strong> stack weather + emotion + lens + plot in the same line.</p><h3>3) Cap length to the stable window</h3><p>Start at <strong>4 seconds</strong>. If that holds, try 5. Jumping straight to 10s was my biggest money burn.</p><h3>4) Change one knob per retry</h3><p>Retry order that saved me credits: motion verb → duration → seed. Never all three.</p><h3>Mini case</h3><p>Still: desk product photo.  </p><p>Prompt: “slow lateral drift left, soft hold.”  </p><p>Length: 4s.  </p><p>Result: first take usable for a loop. Second take only changed “drift left” → “gentle zoom in” — still clean. Old habit would have rewritten the whole cinematic paragraph and wasted two full runs.</p><h2>What I still won’t claim</h2><ul><li>This does not fix every face/hand failure.</li><li>Longer storyboard clips still need more than one shot.</li><li>If you need frame-perfect edit control, a traditional editor after the AI draft is still smarter than forcing one mega-prompt.</li></ul><h2>Where I run this workflow</h2><p>I keep using this checklist on <a href="https://wan30.video">Wan 3.0 video generator</a> because it is aimed at image-to-video drafts rather than a full NLE. The link is just where I test the same 4 steps — the checklist works on other image-to-video tools too.</p><p>If you only steal one thing from this page: <strong>4 seconds, one motion verb, one change per retry.</strong></p>
 </body>
 </html>
